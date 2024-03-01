@@ -81,6 +81,11 @@ function PlayState:update(dt)
 
     if love.keyboard.wasPressed("p") then
         self:setPause()
+        if self:isPaused() then
+            love.audio.pause(sounds["music"])
+        else
+            love.audio.play(sounds["music"])
+        end
     end
 
     if not self:isPaused() then
@@ -198,6 +203,13 @@ function PlayState:render()
     love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
 
     self.bird:render()
+
+    -- render the pause menu
+    if self:isPaused() then
+        -- render count big in the middle of the screen
+        love.graphics.setFont(hugeFont)
+        love.graphics.printf("Pause", 0, 120, VIRTUAL_WIDTH, 'center')
+    end
 end
 
 --[[
