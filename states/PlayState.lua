@@ -26,11 +26,11 @@ local function randomizeGap(min, max)
     return PIPE_GAP_HEIGHT + randomNumber
 end
 
--- increase the speed scroll of the game
+-- increase the scroll speed of the game
 local function increaseGameSpeed()
-    PIPE_SPEED = PIPE_SPEED * 1.1
-    GROUND_SCROLL_SPEED = GROUND_SCROLL_SPEED * 1.1
-    BACKGROUND_SCROLL_SPEED = BACKGROUND_SCROLL_SPEED * 1.1
+    PIPE_SPEED = PIPE_SPEED * 1.15
+    GROUND_SCROLL_SPEED = GROUND_SCROLL_SPEED * 1.15
+    BACKGROUND_SCROLL_SPEED = BACKGROUND_SCROLL_SPEED * 1.15
 end
 
 -- reset the speed scroll of the game
@@ -53,7 +53,7 @@ function PlayState:init()
     self.timePassed = 0
 
     -- interval at which pipes are spawned
-    self.pipeSpawnSpeed = 3
+    self.pipeSpawnSpeed = 2.5
 
     -- initialize our last recorded Y value for a gap placement to base other gaps off of
     self.lastY = -PIPE_HEIGHT + math.random(80) + 20
@@ -81,6 +81,7 @@ function PlayState:update(dt)
 
     if love.keyboard.wasPressed("p") then
         self:setPause()
+        love.audio.play(sounds['pause'])
         if self:isPaused() then
             love.audio.pause(sounds["music"])
         else
@@ -105,8 +106,8 @@ function PlayState:update(dt)
         -- the pipe height gap random size
         -- the pipes horizontal gap size
         if self.timePassed > 10 then
-            self.min = self.min + -10
-            self.max = self.max + -10
+            self.min = self.min + -15
+            self.max = self.max + -15
             -- reset timePassed counter
             self.timePassed = 0
 
@@ -116,7 +117,7 @@ function PlayState:update(dt)
             if self.pipeSpawnSpeed <= 0 then
                 self.pipeSpawnSpeed = 0
             else
-                self.pipeSpawnSpeed = self.pipeSpawnSpeed * 0.8
+                self.pipeSpawnSpeed = self.pipeSpawnSpeed * 0.7
             end
         end
 
@@ -182,8 +183,8 @@ function PlayState:update(dt)
         -- update bird based on gravity and input
         self.bird:update(dt)
 
-        -- reset if we get to the ground
-        if self.bird.y > VIRTUAL_HEIGHT - 15 then
+        -- reset if we get to the ground or the ceiling
+        if (self.bird.y > VIRTUAL_HEIGHT - 15) or (self.bird.y < 0 - (self.bird.height / 2)) then
             sounds['explosion']:play()
             sounds['hurt']:play()
 

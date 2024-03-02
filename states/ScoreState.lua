@@ -45,7 +45,7 @@ function ScoreState:render()
     -- render the trophy first
     love.graphics.draw(self.trophy_img
         ,(VIRTUAL_WIDTH / 2 - 55)
-        ,(VIRTUAL_HEIGHT / 2 - 55))
+        ,(VIRTUAL_HEIGHT / 2 -55))
 
     -- simply render the score to the middle of the screen
     love.graphics.setFont(flappyFont)
