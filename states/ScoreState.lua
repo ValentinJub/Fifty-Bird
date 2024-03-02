@@ -16,6 +16,16 @@ ScoreState = Class{__includes = BaseState}
 ]]
 function ScoreState:enter(params)
     self.score = params.score
+
+    -- load the trophy_img depending on the score
+    if self.score <= 5 then
+        self.trophy_img = love.graphics.newImage("trophy-bronze.png")
+    elseif self.score <= 14 then
+        self.trophy_img = love.graphics.newImage("trophy-silver.png")
+    else
+        self.trophy_img = love.graphics.newImage("trophy-gold.png")
+    end
+
 end
 
 function ScoreState:update(dt)
@@ -31,6 +41,12 @@ function ScoreState:update(dt)
 end
 
 function ScoreState:render()
+
+    -- render the trophy first
+    love.graphics.draw(self.trophy_img
+        ,(VIRTUAL_WIDTH / 2 - 55)
+        ,(VIRTUAL_HEIGHT / 2 - 55))
+
     -- simply render the score to the middle of the screen
     love.graphics.setFont(flappyFont)
     love.graphics.printf('Oof! You lost!', 0, 64, VIRTUAL_WIDTH, 'center')
